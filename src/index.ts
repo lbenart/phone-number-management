@@ -1,0 +1,1 @@
+export {allocateNumber} from './functions/allocate_number';

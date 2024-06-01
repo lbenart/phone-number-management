@@ -1,0 +1,37 @@
+service: number-management
+frameworkVersion: '3'
+
+provider:
+  region: us-east-2
+  timeout: 30
+  stage: ${opt:stage, 'dev'}
+  name: aws
+  runtime: nodejs18.x
+  environment:
+    DB_URI: ${env:DB_URI}
+
+functions:
+  allocateNumber:
+    handler: dist/index.allocateNumber
+    events:
+      - http:
+          path: /allocate
+          method: POST
+          cors: true
+
+custom:
+  esbuild:
+    exclude:
+      - node_modules/pg-native/**
+  stage: ${opt:stage, self:provider.stage}
+  apiName:
+    prod: ct-backend-api
+    staging: ct-backend-apistaging
+    dev: ct-backend-apidev
+  importApiGateway:
+    name: ${self:custom.apiName.${self:custom.stage}}
+    path: /users
+
+plugins:
+  - serverless-offline
+  - serverless-import-apigateway

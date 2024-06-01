@@ -1,0 +1,19 @@
+service: number-management
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+
+functions:
+  allocateNumber:
+    handler: dist/index.allocateNumber
+    events:
+      - http:
+          path: /allocate
+          method: POST
+          cors: true
+
+plugins:
+  - serverless-offline
+  - serverless-dotenv-plugin
