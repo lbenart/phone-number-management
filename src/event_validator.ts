@@ -1,5 +1,6 @@
 import Ajv from 'ajv';
 import { IAllocateNumberParams } from './schemas/allocate_number';
+import { IDeallocateNumberParams } from './schemas/deallocate_number';
 
 export function validateAllocateNumberRequestBody(body: string | null): IAllocateNumberParams {
     const requestBody = JSON.parse(body ? body : '');
@@ -8,7 +9,7 @@ export function validateAllocateNumberRequestBody(body: string | null): IAllocat
     }
 
     const ajv = new Ajv();
-    const validateInputSchema = ajv.compile(creteUserInputSchema);
+    const validateInputSchema = ajv.compile(allocateNumberInputSchema);
     validateInputSchema(requestBody);
 
     if (validateInputSchema.errors) {
@@ -25,7 +26,7 @@ export function validateAllocateNumberRequestBody(body: string | null): IAllocat
     };
 }
 
-const creteUserInputSchema = {
+const allocateNumberInputSchema = {
     type: 'object',
     properties: {
         passport_id: {type: 'string'},
@@ -34,5 +35,36 @@ const creteUserInputSchema = {
         organization_id: {type: 'string'},
     },
     required: ['passport_id', 'first_name', 'last_name', 'organization_id'],
+    additionalProperties: false,
+};
+
+
+export function validateDeallocateNumberRequestBody(body: string | null): IDeallocateNumberParams {
+    const requestBody = JSON.parse(body ? body : '');
+    if (!requestBody) {
+        throw new Error('No valid request body received');
+    }
+
+    const ajv = new Ajv();
+    const validateInputSchema = ajv.compile(deallocateNumberInputSchema);
+    validateInputSchema(requestBody);
+
+    if (validateInputSchema.errors) {
+        console.error('Failure trying to validate request body for deallocate number', validateInputSchema.errors);
+        const errors = JSON.stringify(validateInputSchema.errors[0]);
+        throw new Error(`Request body does not conform to Deallocate Number schema: ${errors}`);
+    }
+
+    return {
+        passport_id: requestBody.passport_id,
+    };
+}
+
+const deallocateNumberInputSchema = {
+    type: 'object',
+    properties: {
+        passport_id: {type: 'string'},
+    },
+    required: ['passport_id'],
     additionalProperties: false,
 };

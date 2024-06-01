@@ -13,6 +13,20 @@ functions:
           path: /allocate
           method: POST
           cors: true
+  deallocateNumber:
+    handler: dist/index.deallocateNumber
+    events:
+      - http:
+          path: /deallocate
+          method: POST
+          cors: true
+  listUsers:
+    handler: dist/index.listUsers
+    events:
+      - http:
+          path: /users/{organization_id}
+          method: GET
+          cors: true
 
 plugins:
   - serverless-offline
