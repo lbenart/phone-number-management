@@ -1,14 +1,14 @@
 import { APIGatewayEvent } from 'aws-lambda';
-import { validateDeallocateNumberRequestBody } from '../event_validator';
-import { IDeallocateNumberParams } from '../schemas/deallocate_number';
+import { validateCreateOrgRequestBody } from '../event_validator';
+import { ICreateOrganizationParams } from '../schemas/create_organization';
 import { createError400Response, createSuccessResponse, createUnknownErrorResponse } from '../custom_responses';
-import { deallocatePhoneNumber } from '../services/deallocate_number';
+import { createOrganization } from '../services/create_organization';
 
-export async function deallocateNumber(event: APIGatewayEvent) {
+export async function createOrganizationHandler(event: APIGatewayEvent) {
 
-    let requestBody: IDeallocateNumberParams;
+    let requestBody: ICreateOrganizationParams;
     try {
-        requestBody = validateDeallocateNumberRequestBody(event.body);
+        requestBody = validateCreateOrgRequestBody(event.body);
     } catch (error) {
         if (error instanceof Error) {
             return createError400Response('failure trying to validate event request', error);
@@ -17,7 +17,7 @@ export async function deallocateNumber(event: APIGatewayEvent) {
     }
 
     try{
-        await deallocatePhoneNumber(requestBody);
+        await createOrganization(requestBody.ID, requestBody.name);
         return createSuccessResponse('success');
     } catch (error) {
         if (error instanceof Error) {

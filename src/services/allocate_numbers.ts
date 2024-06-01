@@ -1,13 +1,12 @@
 import { IAllocateNumberParams } from '../schemas/allocate_number';
 import { MongoClient } from 'mongodb';
 
-const uri = "mongodb://localhost:27017";
 
 export async function allocatePhoneNumber(requestBody: IAllocateNumberParams) {
     
     const { passport_id, first_name, last_name, organization_id} = requestBody;
 
-    const client = new MongoClient(uri);
+    const client = new MongoClient(process.env.MONGODB_URI || 'mongodb://localhost:27017');
 
     try {
         await client.connect();

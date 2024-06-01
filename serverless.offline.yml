@@ -27,6 +27,13 @@ functions:
           path: /users/{organization_id}
           method: GET
           cors: true
+  createOrganization:
+    handler: dist/index.createOrganizationHandler
+    events:
+      - http:
+          path: /organizations
+          method: POST
+          cors: true
 
 plugins:
   - serverless-offline

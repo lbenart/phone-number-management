@@ -1,9 +1,8 @@
-import { MongoClient, ObjectId } from 'mongodb';
+import { MongoClient } from 'mongodb';
 
-const uri = "mongodb://localhost:27017";
 
 export async function listUsersWithAllocatedNumbers(organization_id: string) {
-    const client = new MongoClient(uri);
+    const client = new MongoClient(process.env.MONGODB_URI || 'mongodb://localhost:27017');
 
     try {
         await client.connect();

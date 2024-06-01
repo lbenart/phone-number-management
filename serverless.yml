@@ -8,7 +8,7 @@ provider:
   name: aws
   runtime: nodejs18.x
   environment:
-    DB_URI: ${env:DB_URI}
+    DB_URI: ${env:MONGODB_URI}
 
 functions:
   allocateNumber:
@@ -31,6 +31,13 @@ functions:
       - http:
           path: /users/{organization_id}
           method: GET
+          cors: true
+  createOrganization:
+    handler: dist/index.createOrganizationHandler
+    events:
+      - http:
+          path: /organizations
+          method: POST
           cors: true
 
 custom:

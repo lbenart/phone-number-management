@@ -6,7 +6,6 @@ import { allocatePhoneNumber } from '../services/allocate_numbers';
 
 export async function allocateNumber(event: APIGatewayEvent) {
 
-
     let requestBody: IAllocateNumberParams;
     try {
         requestBody = validateAllocateNumberRequestBody(event.body);
@@ -26,6 +25,4 @@ export async function allocateNumber(event: APIGatewayEvent) {
         }
         return createUnknownErrorResponse('something went wrong trying to allocate phone number');
     }
-
-
 }

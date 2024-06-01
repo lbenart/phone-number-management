@@ -1,6 +1,7 @@
 import Ajv from 'ajv';
 import { IAllocateNumberParams } from './schemas/allocate_number';
 import { IDeallocateNumberParams } from './schemas/deallocate_number';
+import { ICreateOrganizationParams } from './schemas/create_organization';
 
 export function validateAllocateNumberRequestBody(body: string | null): IAllocateNumberParams {
     const requestBody = JSON.parse(body ? body : '');
@@ -66,5 +67,37 @@ const deallocateNumberInputSchema = {
         passport_id: {type: 'string'},
     },
     required: ['passport_id'],
+    additionalProperties: false,
+};
+
+export function validateCreateOrgRequestBody(body: string | null): ICreateOrganizationParams {
+    const requestBody = JSON.parse(body ? body : '');
+    if (!requestBody) {
+        throw new Error('No valid request body received');
+    }
+
+    const ajv = new Ajv();
+    const validateInputSchema = ajv.compile(createOrganizationInputSchema);
+    validateInputSchema(requestBody);
+
+    if (validateInputSchema.errors) {
+        console.error('Failure trying to validate request body for create organization', validateInputSchema.errors);
+        const errors = JSON.stringify(validateInputSchema.errors[0]);
+        throw new Error(`Request body does not conform to Create Organization schema: ${errors}`);
+    }
+
+    return {
+        ID: requestBody.id,
+        name: requestBody.name,
+    };
+}
+
+const createOrganizationInputSchema = {
+    type: 'object',
+    properties: {
+        id: {type: 'string'},
+        name: {type: 'string'},
+    },
+    required: ['id', 'name'],
     additionalProperties: false,
 };

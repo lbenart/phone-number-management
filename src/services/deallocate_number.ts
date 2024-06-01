@@ -1,12 +1,11 @@
 import { MongoClient } from 'mongodb';
 import { IDeallocateNumberParams } from '../schemas/deallocate_number';
 
-const uri = "mongodb://localhost:27017";
 
 export async function deallocatePhoneNumber(requestBody: IDeallocateNumberParams) {
     const { passport_id } = requestBody;
 
-    const client = new MongoClient(uri);
+    const client = new MongoClient(process.env.MONGODB_URI || 'mongodb://localhost:27017');
 
     try {
         await client.connect();

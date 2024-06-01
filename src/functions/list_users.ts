@@ -26,6 +26,4 @@ export async function listUsers(event: APIGatewayEvent) {
         }
         return createUnknownErrorResponse('something went wrong trying to allocate phone number');
     }
-
-
 }
