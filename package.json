@@ -26,6 +26,7 @@
     "eslint-plugin-n": "^15.6.1",
     "eslint-plugin-promise": "^6.1.1",
     "serverless-dotenv-plugin": "^6.0.0",
+    "serverless-import-apigateway": "^1.1.1",
     "serverless-offline": "^12.0.4",
     "serverless-plugin-typescript": "2.1.4",
     "ts-jest": "^29.0.5",
@@ -37,7 +38,7 @@
     "deploy": "serverless deploy",
     "invoketest": "serverless invoke -f functionName -l",
     "test": "jest __tests__/medium_tests __tests__/small_tests --coverage=false -i",
-    "test:c": "jest __tests__/medium_tests __tests__/small_tests",
+    "test:s": "jest __tests__/small_tests --coverage=false -i",
     "lint": "eslint --ext .js,.ts .",
     "offline": "serverless offline -t -c serverless.offline.yml"
   },

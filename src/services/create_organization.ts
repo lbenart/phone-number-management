@@ -30,7 +30,7 @@ export async function createOrganization(ID: string, name: string) {
             updated_at: new Date()
         };
         await organizationsCollection.insertOne(organizationDoc);
-        return { 'X-API-Key': apiKey };
+        return apiKey;
     } catch (error: any) {
         if (error.code === 11000) {  // Duplicate key error code
             throw new Error('Organization with this ID already exists');

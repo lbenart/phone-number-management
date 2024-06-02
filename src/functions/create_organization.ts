@@ -18,7 +18,7 @@ export async function createOrganizationHandler(event: APIGatewayEvent) {
 
     try{
         const response = await createOrganization(requestBody.ID, requestBody.name);
-        return createSuccessCreatedResponse(response['X-API-Key']);
+        return createSuccessCreatedResponse(response);
     } catch (error) {
         if (error instanceof Error) {
             return createError400Response('failure trying to create organization', error);

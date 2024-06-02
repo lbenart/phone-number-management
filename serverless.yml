@@ -7,8 +7,6 @@ provider:
   stage: ${opt:stage, 'dev'}
   name: aws
   runtime: nodejs18.x
-  environment:
-    DB_URI: ${env:MONGODB_URI}
 
 functions:
   allocateNumber:
@@ -41,17 +39,12 @@ functions:
           cors: true
 
 custom:
-  esbuild:
-    exclude:
-      - node_modules/pg-native/**
   stage: ${opt:stage, self:provider.stage}
   apiName:
-    prod: ct-backend-api
-    staging: ct-backend-apistaging
-    dev: ct-backend-apidev
+    dev: backend-apidev
   importApiGateway:
     name: ${self:custom.apiName.${self:custom.stage}}
-    path: /users
+    path: /phone-numbers
 
 plugins:
   - serverless-offline

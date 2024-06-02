@@ -23,7 +23,7 @@ export async function deallocatePhoneNumber(requestBody: IDeallocateNumberParams
         }
 
         // Check if the user belongs to the organization
-        const user = await usersCollection.findOne({ passport_id, organization_id: organization._id });
+        const user = await usersCollection.findOne({ passport_id, organization_id: organization.ID });
 
         if (!user) {
             throw new Error('User not found in the organization.');
