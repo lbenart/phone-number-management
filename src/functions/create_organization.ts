@@ -21,8 +21,8 @@ export async function createOrganizationHandler(event: APIGatewayEvent) {
         return createSuccessResponse('success');
     } catch (error) {
         if (error instanceof Error) {
-            return createError400Response('failure trying to allocate phone number', error);
+            return createError400Response('failure trying to create organization', error);
         }
-        return createUnknownErrorResponse('something went wrong trying to allocate phone number');
+        return createUnknownErrorResponse('something went wrong trying to create organization');
     }
 }

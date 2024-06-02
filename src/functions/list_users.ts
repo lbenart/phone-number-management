@@ -22,8 +22,8 @@ export async function listUsers(event: APIGatewayEvent) {
         };
     } catch (error) {
         if (error instanceof Error) {
-            return createError400Response('failure trying to allocate phone number', error);
+            return createError400Response('failure trying to list users', error);
         }
-        return createUnknownErrorResponse('something went wrong trying to allocate phone number');
+        return createUnknownErrorResponse('something went wrong trying to list users');
     }
 }
