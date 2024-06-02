@@ -1,8 +1,10 @@
-import { APIGatewayEvent } from 'aws-lambda';
-import { validateAllocateNumberRequestBody } from '../event_validator';
-import { IAllocateNumberParams } from '../schemas/allocate_number';
-import { createError400Response, createSuccessResponse, createUnknownErrorResponse } from '../custom_responses';
-import { allocatePhoneNumber } from '../services/allocate_numbers';
+import {APIGatewayEvent} from 'aws-lambda';
+import {validateAllocateNumberRequestBody} from '../event_validator';
+import {IAllocateNumberParams} from '../schemas/allocate_number';
+import {ErrorResponse404, createError400Response, createError404Response, 
+        createSuccessResponse, createUnknownErrorResponse} from '../custom_responses';
+import {allocatePhoneNumber} from '../services/allocate_numbers';
+
 
 export async function allocateNumber(event: APIGatewayEvent) {
 
@@ -20,6 +22,9 @@ export async function allocateNumber(event: APIGatewayEvent) {
         await allocatePhoneNumber(requestBody);
         return createSuccessResponse('success');
     } catch (error) {
+        if (error instanceof ErrorResponse404){
+            return createError404Response(error.message);
+        }
         if (error instanceof Error) {
             return createError400Response('failure trying to allocate phone number', error);
         }

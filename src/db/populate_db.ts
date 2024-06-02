@@ -2,8 +2,6 @@ import { MongoClient } from 'mongodb';
 import * as fs from 'fs';
 import { parse } from 'csv-parse';
 
-const uri = "mongodb://localhost:27017"; // MongoDB connection string
-
 interface PhoneNumber {
     number: string;
     allocated: boolean;
@@ -12,11 +10,11 @@ interface PhoneNumber {
 }
 
 async function populateDatabase() {
-    const client = new MongoClient(uri);
+    const client = new MongoClient(process.env.MONGODB_URI || 'mongodb://localhost:27017');
 
     try {
         await client.connect();
-        const database = client.db('organization_db'); // Replace with your database name
+        const database = client.db('organization_db');
         const phoneNumbersCollection = database.collection('PhoneNumbers');
 
         // Ensure the collection is created

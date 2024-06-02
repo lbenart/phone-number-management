@@ -24,10 +24,11 @@ export async function createOrganization(ID: string, name: string) {
             updated_at: new Date()
         };
         const result = await organizationsCollection.insertOne(organizationDoc);
-        console.log(organizationDoc.ID)
-        console.log('Organization created successfully with ID:', result.insertedId);
         return result.insertedId;
-    } catch (error) {
+    } catch (error: any) {
+        if (error.code === 11000) {  // Duplicate key error code
+            throw new Error('Organization with this ID already exists');
+        }
         console.error('Error creating organization:', error);
         throw error;
     } finally {

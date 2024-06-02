@@ -12,6 +12,20 @@ export function createSuccessResponse(customMessage: string): {statusCode: numbe
     }
 }
 
+export function createSuccessCreatedResponse(customMessage: string): {statusCode: number, body: string, headers: any} {
+    return {
+        statusCode: 201,
+        body: JSON.stringify({
+            message: `${customMessage}`,
+        }),
+        headers: {
+            "Access-Control-Allow-Headers" : "Content-Type",
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "OPTIONS,POST"
+        }
+    }
+}
+
 export function createError400Response(customMessage: string, error: Error): {statusCode: number, body: string, headers: any} {
     console.error(customMessage);
     return {
@@ -44,8 +58,9 @@ export function createUnknownErrorResponse(customMessage: string): {statusCode: 
     };
 }
 
-export class ErrorResponse404 {
+export class ErrorResponse404 extends Error {
     constructor(public name: string, public message: string) {
+        super();
     }
 }
 

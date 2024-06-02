@@ -1,3 +1,4 @@
+import { ErrorResponse404 } from '../custom_responses';
 import { IAllocateNumberParams } from '../schemas/allocate_number';
 import { MongoClient } from 'mongodb';
 
@@ -5,7 +6,6 @@ import { MongoClient } from 'mongodb';
 export async function allocatePhoneNumber(requestBody: IAllocateNumberParams) {
     
     const { passport_id, first_name, last_name, organization_id} = requestBody;
-
     const client = new MongoClient(process.env.MONGODB_URI || 'mongodb://localhost:27017');
 
     try {
@@ -14,6 +14,14 @@ export async function allocatePhoneNumber(requestBody: IAllocateNumberParams) {
         const database = client.db('organization_db');
         const usersCollection = database.collection('Users');
         const phoneNumbersCollection = database.collection('PhoneNumbers');
+        const organizationsCollection = database.collection('Organizations');
+
+        // Check if the organization exists
+        const organization = await organizationsCollection.findOne({ ID: organization_id });
+
+        if (!organization) {
+            throw new ErrorResponse404('Not found', 'Organization not found.');
+        }
 
         // Check if the user already exists and has a phone number allocated
         const existingUser = await usersCollection.findOne({ passport_id });
