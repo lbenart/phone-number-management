@@ -1,7 +1,7 @@
 import { APIGatewayEvent } from 'aws-lambda';
 import { validateCreateOrgRequestBody } from '../event_validator';
 import { ICreateOrganizationParams } from '../schemas/create_organization';
-import { createError400Response, createSuccessResponse, createUnknownErrorResponse } from '../custom_responses';
+import { createError400Response, createSuccessCreatedResponse, createSuccessResponse, createUnknownErrorResponse } from '../custom_responses';
 import { createOrganization } from '../services/create_organization';
 
 export async function createOrganizationHandler(event: APIGatewayEvent) {
@@ -17,8 +17,8 @@ export async function createOrganizationHandler(event: APIGatewayEvent) {
     }
 
     try{
-        await createOrganization(requestBody.ID, requestBody.name);
-        return createSuccessResponse('success');
+        const response = await createOrganization(requestBody.ID, requestBody.name);
+        return createSuccessCreatedResponse(response['X-API-Key']);
     } catch (error) {
         if (error instanceof Error) {
             return createError400Response('failure trying to create organization', error);

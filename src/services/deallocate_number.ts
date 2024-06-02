@@ -2,7 +2,7 @@ import { MongoClient } from 'mongodb';
 import { IDeallocateNumberParams } from '../schemas/deallocate_number';
 
 
-export async function deallocatePhoneNumber(requestBody: IDeallocateNumberParams) {
+export async function deallocatePhoneNumber(requestBody: IDeallocateNumberParams, orgApiKey: string) {
     const { passport_id } = requestBody;
 
     const client = new MongoClient(process.env.MONGODB_URI || 'mongodb://localhost:27017');
@@ -13,12 +13,20 @@ export async function deallocatePhoneNumber(requestBody: IDeallocateNumberParams
         const database = client.db('organization_db');
         const usersCollection = database.collection('Users');
         const phoneNumbersCollection = database.collection('PhoneNumbers');
+        const organizationsCollection = database.collection('Organizations');
 
-        // Find the user by passport_id
-        const user = await usersCollection.findOne({ passport_id });
+        // Find the organization by API key
+        const organization = await organizationsCollection.findOne({ api_key: orgApiKey });
+
+        if (!organization) {
+            throw new Error('Invalid API key.');
+        }
+
+        // Check if the user belongs to the organization
+        const user = await usersCollection.findOne({ passport_id, organization_id: organization._id });
 
         if (!user) {
-            throw new Error('User not found.');
+            throw new Error('User not found in the organization.');
         }
 
         const phoneNumber = user.phone_number;

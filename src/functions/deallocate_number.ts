@@ -6,6 +6,12 @@ import { deallocatePhoneNumber } from '../services/deallocate_number';
 
 export async function deallocateNumber(event: APIGatewayEvent) {
 
+    const apiKey = event.headers['x-api-key'];
+
+    if (!apiKey) {
+        return createError400Response('Authorization header missing', new Error('Missing API key'));
+    }
+
     let requestBody: IDeallocateNumberParams;
     try {
         requestBody = validateDeallocateNumberRequestBody(event.body);
@@ -17,7 +23,7 @@ export async function deallocateNumber(event: APIGatewayEvent) {
     }
 
     try{
-        await deallocatePhoneNumber(requestBody);
+        await deallocatePhoneNumber(requestBody, apiKey);
         return createSuccessResponse('success');
     } catch (error) {
         if (error instanceof Error) {
