@@ -116,17 +116,14 @@ Starting Offline at stage dev (us-east-1)
 
 Offline [http for lambda] listening on http://localhost:3002
 Function names exposed for local invocation by aws-sdk:
-           * allocateNumber: number-management-dev-allocateNumber
-           * deallocateNumber: number-management-dev-deallocateNumber
-           * listUsers: number-management-dev-listUsers
-           * createOrganization: number-management-dev-createOrganization
 
-   ┌──────────────────────────────────────────────────────────────────────────────────────┐
-   │   POST | http://localhost:3000/dev/allocate                                          |
-   │   POST | http://localhost:3000/dev/deallocate                                        |
-   │   GET  | http://localhost:3000/dev/users/{organization_id}                           |
-   │   POST | http://localhost:3000/dev/organizations                                     |
-   └──────────────────────────────────────────────────────────────────────────────────────┘
+           * allocateNumber: number-management-dev-allocateNumber
+
+           * deallocateNumber: number-management-dev-deallocateNumber
+
+           * listUsers: number-management-dev-listUsers
+           
+           * createOrganization: number-management-dev-createOrganization
 
 Server ready: http://localhost:3000 🚀
 
