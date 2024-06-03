@@ -1,0 +1,171 @@
+openapi: 3.0.0
+info:
+  title: Phone Number Management API
+  description: API for managing phone numbers within organizations
+  version: 1.0.0
+servers:
+  - url: http://localhost:3000/dev
+    description: Local development server
+  - url: https://rf2q7pg9rd.execute-api.us-east-2.amazonaws.com/dev/phone-numbers
+    description: Live AWS API Gateway deployment
+paths:
+  /organizations:
+    post:
+      summary: Create a new organization
+      requestBody:
+        description: Organization details
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                  example: org123
+                  description: Unique identifier for the organization
+                name:
+                  type: string
+                  example: Example Organization
+                  description: Name of the organization
+      responses:
+        '201':
+          description: Organization created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: API key for the created organization
+                    example: 74297d823e3510723b14027b31dcc5e930e71c2b78ff4083e7c13a824e2
+        '400':
+          description: Bad request
+        '500':
+          description: Internal server error
+  /allocate:
+    post:
+      summary: Allocate a phone number to a user
+      requestBody:
+        description: User and organization details for allocation
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                passport_id:
+                  type: string
+                  description: Passport ID of the user
+                  example: passport_1
+                first_name:
+                  type: string
+                  description: First name of the user
+                  example: Maria
+                last_name:
+                  type: string
+                  description: Last name of the user
+                  example: Mar
+                organization_id:
+                  type: string
+                  description: ID of the organization
+                  example: AAA
+      responses:
+        '200':
+          description: Phone number allocated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Success message
+                    example: success
+        '400':
+          description: Bad request
+        '404':
+          description: No available phone numbers or Organization not found
+        '500':
+          description: Internal server error
+  /deallocate:
+    post:
+      summary: Deallocate a phone number from a user
+      requestBody:
+        description: Passport ID of the user to deallocate the phone number from
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                passport_id:
+                  type: string
+                  description: Passport ID of the user
+                  example: passport_2
+      parameters:
+        - in: header
+          name: x-api-key
+          required: true
+          schema:
+            type: string
+          description: API key for authorization
+      responses:
+        '200':
+          description: Phone number deallocated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Success message
+                    example: success
+        '400':
+          description: Bad request
+        '404':
+          description: User not found in the organization
+        '500':
+          description: Internal server error
+  /users/{organization_id}:
+    get:
+      summary: List users with allocated phone numbers for an organization
+      parameters:
+        - in: path
+          name: organization_id
+          required: true
+          schema:
+            type: string
+          description: ID of the organization
+      responses:
+        '200':
+          description: List of users with allocated phone numbers
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    passport_id:
+                      type: string
+                      description: Passport ID of the user
+                      example: passport_1
+                    first_name:
+                      type: string
+                      description: First name of the user
+                      example: Maria
+                    last_name:
+                      type: string
+                      description: Last name of the user
+                      example: Mar
+                    phone_number:
+                      type: string
+                      description: Allocated phone number
+                      example: 644199790
+        '400':
+          description: Bad request
+        '500':
+          description: Internal server error

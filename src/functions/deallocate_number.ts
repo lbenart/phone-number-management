@@ -1,7 +1,8 @@
 import { APIGatewayEvent } from 'aws-lambda';
 import { validateDeallocateNumberRequestBody } from '../event_validator';
 import { IDeallocateNumberParams } from '../schemas/deallocate_number';
-import { createError400Response, createSuccessResponse, createUnknownErrorResponse } from '../custom_responses';
+import { createError400Response, ErrorResponse404, createError404Response, 
+         createSuccessResponse, createUnknownErrorResponse } from '../custom_responses';
 import { deallocatePhoneNumber } from '../services/deallocate_number';
 
 export async function deallocateNumber(event: APIGatewayEvent) {
@@ -26,6 +27,9 @@ export async function deallocateNumber(event: APIGatewayEvent) {
         await deallocatePhoneNumber(requestBody, apiKey);
         return createSuccessResponse('success');
     } catch (error) {
+        if (error instanceof ErrorResponse404){
+            return createError404Response(error.message);
+        }
         if (error instanceof Error) {
             return createError400Response('failure trying to deallocate phone number', error);
         }

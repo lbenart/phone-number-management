@@ -37,6 +37,17 @@ functions:
           path: /organizations
           method: POST
           cors: true
+  serveDocs:
+    handler: dist/index.serveDocs
+    events:
+      - http:
+          path: docs
+          method: GET
+          cors: true
+
+package:
+  include:
+    - openapi.yml
 
 custom:
   stage: ${opt:stage, self:provider.stage}

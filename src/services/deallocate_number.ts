@@ -1,4 +1,5 @@
 import { MongoClient } from 'mongodb';
+import { ErrorResponse404 } from '../custom_responses';
 import { IDeallocateNumberParams } from '../schemas/deallocate_number';
 
 
@@ -26,7 +27,7 @@ export async function deallocatePhoneNumber(requestBody: IDeallocateNumberParams
         const user = await usersCollection.findOne({ passport_id, organization_id: organization.ID });
 
         if (!user) {
-            throw new Error('User not found in the organization.');
+            throw new ErrorResponse404('Not found', 'User not found in the organization.');
         }
 
         const phoneNumber = user.phone_number;

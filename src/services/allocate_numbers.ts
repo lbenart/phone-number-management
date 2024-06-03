@@ -36,7 +36,7 @@ export async function allocatePhoneNumber(requestBody: IAllocateNumberParams) {
         });
 
         if (!phoneNumberDoc) {
-            throw new Error('No available phone numbers.');
+            throw new ErrorResponse404('Not found', 'No available phone numbers.');
         }
 
         // Create new user document if not exists
