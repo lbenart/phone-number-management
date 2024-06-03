@@ -122,8 +122,10 @@ Function names exposed for local invocation by aws-sdk:
            * deallocateNumber: number-management-dev-deallocateNumber
 
            * listUsers: number-management-dev-listUsers
-           
+
            * createOrganization: number-management-dev-createOrganization
+
+           * serveDocs: number-management-dev-serveDocs
 
 Server ready: http://localhost:3000 🚀
 
@@ -131,7 +133,7 @@ Server ready: http://localhost:3000 🚀
 
 ### Accessing the API
 
-The Phone Number Management API is now deployed and ready to use. You can access it at the following URL:
+The Phone Number Management API is now deployed and ready to use. Access it at the following base URL:
 
 ```
 https://rf2q7pg9rd.execute-api.us-east-2.amazonaws.com/dev/phone-numbers
