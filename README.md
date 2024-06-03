@@ -8,11 +8,10 @@ This project contains the necessary Lambda functions to develop an API to manage
 - [Architecture](#architecture)
 - [Setup](#setup)
 - [Deployment](#deployment)
+- [Testing](#testing)
+- [Local dev](#local-development)
 - [Usage](#usage)
-- [Endpoints](#endpoints)
-- [Environment Variables](#environment-variables)
 - [Contributing](#contributing)
-- [License](#license)
 
 ## Features
 
@@ -73,7 +72,7 @@ $ ts-node src/db/populate_db.ts
 $ ts-node src/db/setup_index.ts
 ```
 
-### Testing
+## Testing
 
 The project contains unit testing and medium testing suites using Jest.
 
@@ -91,7 +90,7 @@ $ yarn run test:s
 
 For the tests to run correctly, remember to have a MongoDB test database running on localhost beforehand.
 
-### Deployment to AWS using the Serverless Framework
+## Deployment to AWS using the Serverless Framework
 
 In order to deploy the lambdas to AWS cloud, you need to run the following command:
 
@@ -100,7 +99,7 @@ $ serverless deploy --stage <stage-name> --region <aws-region> --verbose
 ```
 
 
-### Local development
+## Local development
 
 You can expose the functions for local invocation by using the following command:
 
