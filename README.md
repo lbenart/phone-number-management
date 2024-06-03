@@ -63,7 +63,7 @@ $ docker run --name mongodb -d -p 27017:27017 mongo
 
 ### Populate and setup DB
 
-1. Create a .csv file with phone numbers (one per line)
+1. Create a .csv file with phone numbers (one per line).
 
 2. Use the following scripts:
 
@@ -75,7 +75,6 @@ $ ts-node src/db/setup_index.ts
 ## Testing
 
 The project contains unit testing and medium testing suites using Jest.
-
 
 To run the Jest tests you must use the command:
 
